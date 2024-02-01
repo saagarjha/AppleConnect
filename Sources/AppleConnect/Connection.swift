@@ -105,7 +105,7 @@ public struct Connection {
 			}
 			connection.start(queue: .main)
 		}
-		Self.recieveNextMessage(connection: connection, continuation: dataContinuation)
+		Self.receiveNextMessage(connection: connection, continuation: dataContinuation)
 	}
 
 	public func send(data: Data) async throws {
@@ -126,7 +126,7 @@ public struct Connection {
 		connection.cancel()
 	}
 
-	private static func recieveNextMessage(connection: NWConnection, continuation: AsyncThrowingStream<Data, Error>.Continuation) {
+	private static func receiveNextMessage(connection: NWConnection, continuation: AsyncThrowingStream<Data, Error>.Continuation) {
 		connection.receiveMessage { data, _, _, error in
 			guard let data = data else {
 				if let error = error {
@@ -135,7 +135,7 @@ public struct Connection {
 				return
 			}
 			continuation.yield(data)
-			Self.recieveNextMessage(connection: connection, continuation: continuation)
+			Self.receiveNextMessage(connection: connection, continuation: continuation)
 		}
 	}
 }
